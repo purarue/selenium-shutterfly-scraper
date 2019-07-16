@@ -55,11 +55,11 @@ def go_to_next_page():
         wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#pic-detail-img > img')))
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#pic-detail-img > img')))
     except StaleElementReferenceException: # somehow referencing previous image object
-        sleep(3)
+        sleep(2)
         wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#pic-detail-img > img')))
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#pic-detail-img > img')))
 
-    sleep(5)
+    sleep(2)
 
 
 @click.command()
@@ -177,6 +177,7 @@ def main(base_shutterfly_url, username, password, chromedriverpath):
             file_has_been_downloaded = any(map(os.path.exists, possible_filepaths))
 
             if file_has_been_downloaded:
+                print("Downloaded in a previous run")
                 go_to_next_page()
                 continue
 
@@ -189,7 +190,7 @@ def main(base_shutterfly_url, username, password, chromedriverpath):
                 original_contents = [f for f in os.listdir(watch_tmp_dir) if not f.startswith('.')]
                 for s in range(50):
                     sleep(1)
-                    if s % 15 == 2:
+                    if s % 15 == 0:
                         pyautogui.moveTo(download_x, download_y)
                         # shake mouse on download button location to make sure its selected
                         pyautogui.move(0, 3)
@@ -200,17 +201,19 @@ def main(base_shutterfly_url, username, password, chromedriverpath):
                     # ignore hidden files or files currently being downloaded
                     new_contents = [f for f in os.listdir(watch_tmp_dir) if not f.startswith('.') and not f.endswith('.crdownload')]
                     print(new_contents)
-                    new_files = set(new_contents) - set(original_contents)
+                    new_files = set(new_contents) - set(original_contents) # set difference
                     if new_files:
                         new_file = list(new_files)[0]
+                        print(new_file)
                         new_file_fullpath = os.path.join(watch_tmp_dir, new_file)
-                        if os.path.join(albumpath, new_file) not in possible_filepaths:
-                            print("Unpexpected Filepath!", new_file_fullpath)
+                        this_filepath = os.path.join(albumpath, new_file)
+                        if this_filepath not in possible_filepaths:
+                            print(f"Unpexpected Filepath! Could not find {this_filepath} in \n{os.linesep.join(possible_filepaths)}")
                         try:
                             shutil.move(new_file_fullpath, albumpath)
                             # TODO: update metadata, file still has metadata
                         except shutil.Error as se:
-                            # file already downloaded from previous run
+                            # file already downloaded from previous run, somehow
                             if str(se).startswith('Destination path'):
                                 os.remove(new_file_fullpath)
                             else:

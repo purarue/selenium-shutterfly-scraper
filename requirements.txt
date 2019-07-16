@@ -1,3 +1,4 @@
 selenium
 Click
 lxml
+pyautogui
