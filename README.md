@@ -16,6 +16,10 @@ Basic Logic is
 7) Wait till the image is downloaded and move the file to `downloads`/`<album_name>`
 8) Go to step 4 till there are no albums left.
 
+Install dependenceis:
+
+`python3 -m pip install --user -r requirements.txt`
+
 Run:
 
 `python3 driver.py`
