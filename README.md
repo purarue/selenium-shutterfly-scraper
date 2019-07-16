@@ -1,6 +1,6 @@
 # selenium-shutterfly-scraper
 
-Was made to scrape all the current photos in a subdomains album on shutterfly since I couldn't find a clean way to do that.
+Was made to scrape all the current photos in a subdomains album on shutterfly since I couldn't find an easy way to do that.
 
 Not sure if format/classes differ on different shutterfly sites, but leaving this incase its useful to anyone.
 
