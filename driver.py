@@ -111,11 +111,14 @@ def main(base_shutterfly_url, username, password, chromedriverpath):
 
         # wait until All albums are loaded
         wait_time = 20
-        while len(driver.find_elements_by_css_selector("div.pic-album-ftr > a")) == initial_album_count:
+        while wait_time > 0:
             sleep(1)
+            if len(driver.find_elements_by_css_selector("div.pic-album-ftr > a")) != initial_album_count:
+                break
             logging.info('.')
-        else:
-            logging.warning("Album count didn't increase!")
+            wait_time -= 1
+            if wait_time == 0:
+                logging.warning("Album count didn't increase!")
     except:
         pass # assume there are less than 50 albums, which is whats required for there to be an all button
 
