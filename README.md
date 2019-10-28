@@ -2,7 +2,7 @@
 
 Was made to scrape all the current photos in a subdomains album on shutterfly since I couldn't find an easy way to do that.
 
-I'm not sure if website style/css selectors differ on different shutterfly sites, but this worked for my site.
+I'm not sure if website style/CSS selectors differ on different shutterfly sites, but this worked for my site.
 
 Basic Logic is
 
